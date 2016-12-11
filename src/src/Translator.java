@@ -28,7 +28,10 @@ public class Translator {
     }
 
     /**
-     * 1.1.A: At least one cell of row i has the value N
+     * Satisfies:
+     *  1.1.A: At least one cell of row i has the value N
+     * Iterates through row, value, column to create a line which ensures that at least one of the spaces in the
+     * row contains N
      */
     public void constraint1A(){
         String temp = "";
@@ -45,14 +48,32 @@ public class Translator {
     }
 
     /**
-     * 1.1.B: At most one cell of row i has the value N
+     * Satisfies:
+     *  1.1.B: At least one cell of row i has the value N
+     * Iterates through row, value, column to create a line which ensures that at most one of the spaces in the
+     * row contains N
      */
     public void constraint1B(){
-
+        String curr = "";
+        String next = "";
+        for(int row =1; row < 10; row++){
+            for(int val = 1; val < 10; val++){
+                for(int col = 1; col < 10; col++){
+                    for(int nxt = (col + 1); nxt < 10; nxt++) {
+                        curr = "" + row + col + val;
+                        next = "" + row + nxt + val;
+                        sat += "-" + curr + " " + "-" + next + " 0\n";
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * 2.1.A: At least one cell of column i has the value N
+     * Satisfies:
+     *  2.1.A: At least one cell of column i has the value N
+     * Iterates through column, value, row to create a line which ensures that at least one of the spaces in the
+     * column contains N
      */
     public void constraint2A(){
         String temp = "";
@@ -68,8 +89,26 @@ public class Translator {
         }
     }
 
+    /**
+     * Satisfies:
+     *  2.1.B: At most one cell of column i has the value N
+     * Iterates through column, value, row to create a line which ensures that at most one of the spaces in the
+     * column contains N
+     */
     public void constraint2B(){
-
+        String curr = "";
+        String next = "";
+        for(int col =1; col < 10; col++){
+            for(int val = 1; val < 10; val++){
+                for(int row = 1; row < 10; row++){
+                    for(int nxt = (row + 1); nxt < 10; nxt++) {
+                        curr = "" + row + col + val;
+                        next = "" + row + nxt + val;
+                        sat += "-" + curr + " " + "-" + next + " 0\n";
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -78,13 +117,63 @@ public class Translator {
     public void constraint3A(){
         String temp = "";
     }
-    public void constraint4(){}
+
+    /**
+     * 3.1.B: At most one cell of box i has the value N
+     */
+    public void constraint3B(){
+        String curr = "";
+        String next = "";
+
+    }
+
+    public void constraint4A(){
+        String temp = "";
+        for(int row = 1; row < 10; row++){
+            for(int col = 1; col < 10; col++){
+                for(int val = 1; val < 10; val++){
+                    sat += "" + row + col + val + " ";
+                    if(val == 9){
+                        sat += "0\n";
+                    }
+                }
+            }
+        }
+    }
+
+    public void constraint4B(){
+        String curr = "";
+        String next = "";
+        for(int row =1; row < 10; row++){
+            for(int col = 1; col < 10; col++){
+                for(int val = 1; val < 10; val++){
+                    for(int nxt = (val + 1); nxt < 10; nxt++) {
+                        curr = "" + row + col + val;
+                        next = "" + row + col + nxt;
+                        sat += "-" + curr + " " + "-" + next + " 0\n";
+                    }
+                }
+            }
+        }
+    }
 
     public int[] getVars(){
         return vars;
     }
 
     public String getSat(){
+        return sat;
+    }
+
+    public String translate(){
+        constraint1A();
+        constraint1B();
+        constraint2A();
+        constraint2B();
+        constraint3A();
+        constraint3B();
+        constraint4A();
+        constraint4B();
         return sat;
     }
 
@@ -95,7 +184,7 @@ public class Translator {
      */
     public static void main(String[] args){
         Translator t = Translator.getInstance();
-        t.constraint2A();
+        t.constraint4B();
         System.out.println(t.getSat());
     }
 }
