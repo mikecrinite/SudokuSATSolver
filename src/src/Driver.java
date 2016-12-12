@@ -27,7 +27,7 @@ public class Driver {
                 Translator t = Translator.getInstance();                    // Get an instance of Translator
                 t.setPuzzle(input.parse());                                 // Parse the input and store the puzzle in t
                 String translation = t.translate();                         // Retrieve the translation
-                input.writeToFile(translation);                             // Write the translation to a file
+                input.writeToFile(translation.trim());                             // Write the translation to a file
 
                 //Set up the solver
                 ISolver solver = SolverFactory.newDefault();
@@ -45,7 +45,10 @@ public class Driver {
                     System.out.println(solver.unsatExplanation());
                 }else{
                     System.out.println("Solution:");
-                    System.out.println(reader.decode(problem.model()));
+                    String s = reader.decode(problem.model());
+                    //System.out.println(s);
+                    t.convertSolution(s);
+                    t.printAllRows();
                 }
             }else{
                 System.out.println("You must provide a filename.");
