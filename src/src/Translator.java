@@ -17,10 +17,11 @@
 public class Translator {
     // Fields
     public int[][] puzzle;
-    public int[] vars = new int[729];           //May not use TODO: remove if not used
     public String sat = "";                     //SAT solver input
     public static Translator INSTANCE = null;   //Singleton instance
     public String [] str = new String[729];     //Store vars from 3A for use in 3B
+    public int clauses = 11988;
+    public String header = "p cnf 729 ";
 
     /**
      * Default constructor for type Translator
@@ -74,8 +75,8 @@ public class Translator {
      * row contains N
      */
     public void constraint1B(){
-        String curr = "";
-        String next = "";
+        String curr;
+        String next;
         for(int row =1; row < 10; row++){
             for(int val = 1; val < 10; val++){
                 for(int col = 1; col < 10; col++){
@@ -115,8 +116,8 @@ public class Translator {
      * column contains N
      */
     public void constraint2B(){
-        String curr = "";
-        String next = "";
+        String curr;
+        String next;
         for(int col =1; col < 10; col++){
             for(int val = 1; val < 10; val++){
                 for(int row = 1; row < 10; row++){
@@ -190,7 +191,7 @@ public class Translator {
     }
     /**
      * Satisfies:
-     *  4.1.A: In every space, there is at least one value
+     *  4.1: In every space, there is at least one value
      * Iterates through row, column, value to create a line which ensures that there is at least one value in each space
      */
     public void constraint4A(){
@@ -208,12 +209,12 @@ public class Translator {
 
     /**
      * Satisfies:
-     *  4.1.B: In every space, there is at most one value
+     *  4.2: In every space, there is at most one value
      * Iterates through row, column, value to create a line which ensures that there is only one value in each space
      */
     public void constraint4B(){
-        String curr = "";
-        String next = "";
+        String curr;
+        String next;
         for(int row = 1; row < 10; row++){
             for(int col = 1; col < 10; col++){
                 for(int val = 1; val < 10; val++){
@@ -235,6 +236,7 @@ public class Translator {
             for(int col = 0; col < 9; col++){
                 if(puzzle[row][col] != 0) {
                     sat += "" + (row + 1) + (col + 1) + puzzle[row][col] + " 0\n";
+                    clauses++;
                 }
             }
         }
@@ -245,20 +247,12 @@ public class Translator {
         return puzzle;
     }
 
-    public int[] getVars(){
-        return vars;
-    }
-
     public String getSat(){
         return sat;
     }
 
     public void setPuzzle(int[][] in){
         puzzle = in;
-    }
-
-    public void setVars(int[] in){
-        vars = in;
     }
 
     public void setSat(String in){
@@ -276,17 +270,8 @@ public class Translator {
         constraint4A();
         constraint4B();
         puzzleValues();
+        header += clauses + "\n";
+        sat = header + sat;
         return sat;
     }
-
-//    /**
-//     * For testing purposes only
-//     * TODO: Remove when finished
-//     * @param args Command line arguments
-//     */
-//    public static void main(String[] args){
-//        Translator t = Translator.getInstance();
-//        t.translate();
-//        System.out.println(t.getSat());
-//    }
 }
