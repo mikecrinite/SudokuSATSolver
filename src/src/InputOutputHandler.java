@@ -5,7 +5,7 @@ import java.io.*;
  * the project that I procrastinated an incredible amount on.
  *
  * @author Michael Crinite
- * @version 0.1 12/11/2016
+ * @version 1.0 12/12/2016
  *
  */
 public class InputOutputHandler {
@@ -25,7 +25,7 @@ public class InputOutputHandler {
     }
 
     /**
-     * Reads a properly-formatted sudoku file and
+     * Reads a properly-formatted Sudoku file and
      * @return
      */
     public int[][] parse(){
@@ -73,8 +73,7 @@ public class InputOutputHandler {
     public void writeToFile(String s){
         try{
             //Create file
-            File f = new File("C:\\Users\\Mike\\IdeaProjects\\SudokuSATSolver\\src\\files" + "\\sat");
-
+            File f = new File("./sat.txt");
             FileWriter fw = new FileWriter(f.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(s);
