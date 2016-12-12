@@ -24,6 +24,10 @@ public class InputOutputHandler {
         file = f;
     }
 
+    /**
+     * Reads a properly-formatted sudoku file and
+     * @return
+     */
     public int[][] parse(){
         int i = 0; //row counter
         int dimCounter = 0;
@@ -56,6 +60,11 @@ public class InputOutputHandler {
             br.close();
         }catch(IOException e){
             e.printStackTrace();
+        }catch(NumberFormatException e){
+            System.out.println("Check that the file is in the proper format:" +
+                    "\nThe file can begin with any amount of comment lines (denoted by a 'c')." +
+                    "\nThe file then MUST contain two lines denoting the dimensions of a box." +
+                    "\nThe next 9 lines must contain 9 integers each separated by a single space.");
         }
 
         return puzzle;
@@ -64,7 +73,7 @@ public class InputOutputHandler {
     public void writeToFile(String s){
         try{
             //Create file
-            File f = new File("C:\\Users\\Mike\\IdeaProjects\\SudokuSATSolver\\src\\files" + "\\sat");
+            File f = new File("C:\\Users\\Mike\\IdeaProjects\\SudokuSATSolver\\src\\files" + "\\sat2");
 
             FileWriter fw = new FileWriter(f.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
@@ -73,23 +82,6 @@ public class InputOutputHandler {
 
         }catch(IOException e){
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * For testing
-     * TODO: Remove this
-     * @param args Command line arguments
-     */
-    public static void main(String[] args){
-//        Scanner s = new Scanner(System.in);
-//        System.out.println("Filename?:");
-//        String filename = s.next();
-
-        InputOutputHandler ir = new InputOutputHandler(new File("C:\\Users\\Mike\\Desktop\\p3.txt"));
-        ir.parse();
-        for(int i = 0; i < 9; i++){
-            System.out.println("" + ir.puzzle[i][0] + ir.puzzle[i][1]+ ir.puzzle[i][2]+ ir.puzzle[i][3]+ ir.puzzle[i][4]+ ir.puzzle[i][5]+ ir.puzzle[i][6] + ir.puzzle[i][7]+ ir.puzzle[i][8]);
         }
     }
 }
