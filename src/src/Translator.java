@@ -11,6 +11,9 @@
  *         - 4. Each cell must have exactly one value in the range 1-9
  * For each above constraint, we will need two methods.
  *
+ * When the Sudoku puzzle's SAT reduction is deemed satisfiable, this class will also convert the side-effect solution
+ * to a Sudoku puzzle and print the results.
+ *
  * @author Michael Crinite
  * @version 0.1 12/11/2016
  */
@@ -18,10 +21,12 @@ public class Translator {
     // Fields
     public int[][] puzzle;
     public String sat = "";                     //SAT solver input
+    public String[] vars = new String[729];     //Will hold vars from solved sat solution
     public static Translator INSTANCE = null;   //Singleton instance
     public String [] str = new String[729];     //Store vars from 3A for use in 3B
     public int clauses = 11988;
-    public String header = "p cnf 729 ";
+    public String header = "p cnf 999 ";        //Strangely enough, you have to tell the solver that there
+                                                //are 999 variables or else it will not display up to 999...
 
     /**
      * Default constructor for type Translator
@@ -267,11 +272,41 @@ public class Translator {
         return sat;
     }
 
-    public int[][] convertSolution(String s){
+    public int[][] convertSolution(String solution){
+        vars = solution.split(" ");
+        String s;
+        int row, col, val;
+        for(int i = 0; i < 729; i++){ //With indexes containing "0", the index of var 729 is 503
+            s = vars[i];
 
+            if (!s.startsWith("-")) {
+                row = Integer.parseInt(s.substring(0, 1)) - 1;
+                col = Integer.parseInt(s.substring(1, 2)) - 1;
+                val = Integer.parseInt(s.substring(2));
+                puzzle[row][col] = val;
+            }
+        }
+        return puzzle;
+    }
 
+    /**
+     * Prints a single row to console
+     *
+     * @param row The index of the row which is to be printed.
+     */
+    private void printRow(int row){
+        for(int i : puzzle[row]){
+            System.out.print(i + " ");
+        }
+    }
 
-
-        return new int[0][0];
+    /**
+     * Prints the entire puzzle to the console by row using printRow
+     */
+    public void printAllRows(){
+        for(int i = 0; i < 9; i++){
+            printRow(i);
+            System.out.println();
+        }
     }
 }
