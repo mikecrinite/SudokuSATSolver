@@ -31,14 +31,6 @@ public class Translator {
     }
 
     /**
-     * Translator which passes puzzle as a parameter
-     * @param p
-     */
-    public Translator(int[][] p){
-        puzzle = p;
-    }
-
-    /**
      * Retrieves an instance of the Translator Class.
      * @return The single instance of class Translator
      */
@@ -70,7 +62,7 @@ public class Translator {
 
     /**
      * Satisfies:
-     *  1.1.B: At least one cell of row i has the value N
+     *  1.1.B: At most one cell of row i has the value N
      * Iterates through row, value, column to create a line which ensures that at most one of the spaces in the
      * row contains N
      */
@@ -123,7 +115,7 @@ public class Translator {
                 for(int row = 1; row < 10; row++){
                     for(int nxt = (row + 1); nxt < 10; nxt++) {
                         curr = "" + row + col + val;
-                        next = "" + row + nxt + val;
+                        next = "" + nxt + col + val;
                         sat += "-" + curr + " " + "-" + next + " 0\n";
                     }
                 }
@@ -273,5 +265,13 @@ public class Translator {
         header += clauses + "\n";
         sat = header + sat;
         return sat;
+    }
+
+    public int[][] convertSolution(String s){
+
+
+
+
+        return new int[0][0];
     }
 }
