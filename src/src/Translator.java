@@ -239,24 +239,46 @@ public class Translator {
         }
     }
 
-
+    /**
+     * Returns the current state of puzzle
+     *
+     * @return The input Sudoku puzzle or possibly the solved Sudoku puzzle.
+     */
     public int[][] getPuzzle(){
         return puzzle;
     }
 
+    /**
+     * Returns the String which the SAT solver will utilize to solve the puzzle
+     * @return The SAT condition string
+     */
     public String getSat(){
         return sat;
     }
 
+    /**
+     * Sets the puzzle field to the paramater input
+     * @param in The puzzle to set.
+     */
     public void setPuzzle(int[][] in){
         puzzle = in;
     }
 
+    /**
+     * Sets the SAT field to the inputted string.
+     * @param in
+     */
     public void setSat(String in){
         sat = in;
     }
 
-
+    /**
+     * Runs each of the 8 (4 2-part) constraints to generate the SAT clauses that will appear in every puzzle.
+     * Then runs puzzleValues which will create clauses specific to the inputted puzzle
+     * Finally, consolidates all this information in the sat string to pass to the SAT-solver
+     *
+     * @return The final state of sat before it is passed to the solver.
+     */
     public String translate(){
         constraint1A();
         constraint1B();
@@ -272,6 +294,12 @@ public class Translator {
         return sat;
     }
 
+    /**
+     * Converts the solution passed by the SAT-solver back to a solution which represents a Sudoku puzzle
+     *
+     * @param solution The boolean satisfiability solution returned by the solver
+     * @return The Sudoku solution corresponding to the SAT solution.
+     */
     public int[][] convertSolution(String solution){
         vars = solution.split(" ");
         String s;
