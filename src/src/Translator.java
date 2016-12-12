@@ -279,15 +279,14 @@ public class Translator {
         return sat;
     }
 
-    /**
-     * For testing purposes only
-     * TODO: Remove when finished
-     * @param args Command line arguments
-     */
-    public static void main(String[] args){
-        Translator t = Translator.getInstance();
-        t.constraint3A();
-        t.constraint3B();
-        System.out.println(t.getSat());
-    }
+//    /**
+//     * For testing purposes only
+//     * TODO: Remove when finished
+//     * @param args Command line arguments
+//     */
+//    public static void main(String[] args){
+//        Translator t = Translator.getInstance();
+//        t.translate();
+//        System.out.println(t.getSat());
+//    }
 }

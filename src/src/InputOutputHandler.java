@@ -46,7 +46,7 @@ public class InputOutputHandler {
                         puzzle = new int[rows*cols][rows*cols];
                     }
                     String[] temp = curr.split(" ");
-                    for(int index = 0; index < (rows*cols - 1); index++){
+                    for(int index = 0; index < (rows*cols); index++){
                         puzzle[i][index] = Integer.parseInt(temp[index]);
                     }
                     i++;
@@ -59,6 +59,21 @@ public class InputOutputHandler {
         }
 
         return puzzle;
+    }
+
+    public void writeToFile(String s){
+        try{
+            //Create file
+            File f = new File("C:\\Users\\Mike\\IdeaProjects\\SudokuSATSolver\\src\\files" + "\\sat");
+
+            FileWriter fw = new FileWriter(f.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(s);
+            bw.close();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     /**
