@@ -16,10 +16,31 @@
  */
 public class Translator {
     // Fields
+    public int[][] puzzle;
     public int[] vars = new int[729];           //May not use TODO: remove if not used
     public String sat = "";                     //SAT solver input
     public static Translator INSTANCE = null;   //Singleton instance
+    public String [] str = new String[729];     //Store vars from 3A for use in 3B
 
+    /**
+     * Default constructor for type Translator
+     */
+    public Translator(){
+        //Default constructor
+    }
+
+    /**
+     * Translator which passes puzzle as a parameter
+     * @param p
+     */
+    public Translator(int[][] p){
+        puzzle = p;
+    }
+
+    /**
+     * Retrieves an instance of the Translator Class.
+     * @return The single instance of class Translator
+     */
     public static Translator getInstance(){
         if(INSTANCE == null){
             INSTANCE = new Translator();
@@ -34,7 +55,6 @@ public class Translator {
      * row contains N
      */
     public void constraint1A(){
-        String temp = "";
         for(int row = 1; row < 10; row++){
             for(int val = 1; val < 10; val++){
                 for(int col = 1; col < 10; col++){
@@ -76,7 +96,6 @@ public class Translator {
      * column contains N
      */
     public void constraint2A(){
-        String temp = "";
         for(int col = 1; col < 10; col++){
             for(int val = 1; val < 10; val++){
                 for(int row = 1; row < 10; row++){
@@ -112,23 +131,69 @@ public class Translator {
     }
 
     /**
-     * 3.1.A: At least one cell of box i has the value N
+     * Satisfies:
+     *  3.1.A: At least one cell of box i has the value N
+     * Iterates through a box to create a line which ensures that at least one space in the box contains N.
+     * As it is progressing through each value, it creates an array that will be iterated through in constraint3B()
      */
     public void constraint3A(){
-        String temp = "";
+        //rowIndex + colIndex + val_1-9
+        String temp;
+        int index = 0;
+
+        for (int val = 1; val < 10; val++) {
+            for (int row = 1; row < 10; row += 3) {
+                for (int col = 1; col < 10; col += 3) {
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            temp = (row + i) + "" + (col + j) + "" + val + " ";
+                            str[index] = temp;
+                            sat += temp;
+                            index++;
+                        }
+                    }
+                    sat += "0\n";
+                    //System.out.println("Index: " + index);
+                }
+            }
+        }
     }
 
     /**
-     * 3.1.B: At most one cell of box i has the value N
+     * Satisfies
+     *  3.1.B: At most one cell of box i has the value N
+     * Iterates through the array created dynamically above in order to create lines which ensure that at most one
+     * cell in the box contains N
      */
     public void constraint3B(){
-        String curr = "";
-        String next = "";
+        String curr;        //Current Value
+        String next;        //Next value
+        int address = 0;    //Array address to begin at
+        int remain = 8;     //Remaining items in box
 
+        while(address < 728) {
+            for (int j = 1; j <= remain; j++) {
+                curr = str[address];
+                next = str[address + j];
+                sat += "-" + curr + " " + "-" + next + " 0\n";
+            }
+
+            address++;
+            if(remain == 0){
+                //address++;
+                remain = 8;
+            }else{
+                remain--;
+            }
+
+        }
     }
-
+    /**
+     * Satisfies:
+     *  4.1.A: In every space, there is at least one value
+     * Iterates through row, column, value to create a line which ensures that there is at least one value in each space
+     */
     public void constraint4A(){
-        String temp = "";
         for(int row = 1; row < 10; row++){
             for(int col = 1; col < 10; col++){
                 for(int val = 1; val < 10; val++){
@@ -141,10 +206,15 @@ public class Translator {
         }
     }
 
+    /**
+     * Satisfies:
+     *  4.1.B: In every space, there is at most one value
+     * Iterates through row, column, value to create a line which ensures that there is only one value in each space
+     */
     public void constraint4B(){
         String curr = "";
         String next = "";
-        for(int row =1; row < 10; row++){
+        for(int row = 1; row < 10; row++){
             for(int col = 1; col < 10; col++){
                 for(int val = 1; val < 10; val++){
                     for(int nxt = (val + 1); nxt < 10; nxt++) {
@@ -157,6 +227,24 @@ public class Translator {
         }
     }
 
+    /**
+     * Adds each preset value in the puzzle to the sat string
+     */
+    public void puzzleValues(){
+        for(int row = 0; row < 9; row++){
+            for(int col = 0; col < 9; col++){
+                if(puzzle[row][col] != 0) {
+                    sat += "" + (row + 1) + (col + 1) + puzzle[row][col] + " 0\n";
+                }
+            }
+        }
+    }
+
+
+    public int[][] getPuzzle(){
+        return puzzle;
+    }
+
     public int[] getVars(){
         return vars;
     }
@@ -164,6 +252,19 @@ public class Translator {
     public String getSat(){
         return sat;
     }
+
+    public void setPuzzle(int[][] in){
+        puzzle = in;
+    }
+
+    public void setVars(int[] in){
+        vars = in;
+    }
+
+    public void setSat(String in){
+        sat = in;
+    }
+
 
     public String translate(){
         constraint1A();
@@ -174,6 +275,7 @@ public class Translator {
         constraint3B();
         constraint4A();
         constraint4B();
+        puzzleValues();
         return sat;
     }
 
@@ -184,7 +286,8 @@ public class Translator {
      */
     public static void main(String[] args){
         Translator t = Translator.getInstance();
-        t.constraint4B();
+        t.constraint3A();
+        t.constraint3B();
         System.out.println(t.getSat());
     }
 }
