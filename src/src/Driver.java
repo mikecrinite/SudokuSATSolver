@@ -27,7 +27,7 @@ public class Driver {
                 Translator t = Translator.getInstance();                    // Get an instance of Translator
                 t.setPuzzle(input.parse());                                 // Parse the input and store the puzzle in t
                 String translation = t.translate();                         // Retrieve the translation
-                input.writeToFile(translation);
+                input.writeToFile(translation);                             // Write the translation to a file
 
                 //Set up the solver
                 ISolver solver = SolverFactory.newDefault();
@@ -40,8 +40,7 @@ public class Driver {
 
 
 
-                if(false //The puzzle isn't valid)
-                        || !satisfiable){ //There is no solution)){
+                if(!satisfiable){//TODO: Add clause for invalid input
                     System.out.println("This puzzle has no valid solution.");
                     System.out.println(solver.unsatExplanation());
                 }else{
