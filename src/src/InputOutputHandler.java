@@ -73,7 +73,7 @@ public class InputOutputHandler {
     public void writeToFile(String s){
         try{
             //Create file
-            File f = new File("C:\\Users\\Mike\\IdeaProjects\\SudokuSATSolver\\src\\files" + "\\sat2");
+            File f = new File("C:\\Users\\Mike\\IdeaProjects\\SudokuSATSolver\\src\\files" + "\\sat");
 
             FileWriter fw = new FileWriter(f.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
@@ -84,4 +84,8 @@ public class InputOutputHandler {
             e.printStackTrace();
         }
     }
+
+    //It was way simpler to put the print code in Translator because that's where the relevant
+    //variables are that would need to be printed. Because I completed this, I'm not going
+    //to be picky. Sorry IOHandler, take it up with Translator.
 }
