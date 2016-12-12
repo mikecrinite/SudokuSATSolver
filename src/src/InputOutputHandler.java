@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Scanner;
 
 /**
  * A filereader as efficient as I could make it in the last day of
@@ -9,7 +8,7 @@ import java.util.Scanner;
  * @version 0.1 12/11/2016
  *
  */
-public class InputReader {
+public class InputOutputHandler {
 
     private File file;
     private int rows;
@@ -21,7 +20,7 @@ public class InputReader {
      *
      * @param f File to read
      */
-    public InputReader(File f) {
+    public InputOutputHandler(File f) {
         file = f;
     }
 
@@ -72,7 +71,7 @@ public class InputReader {
 //        System.out.println("Filename?:");
 //        String filename = s.next();
 
-        InputReader ir = new InputReader(new File("C:\\Users\\Mike\\Desktop\\p3.txt"));
+        InputOutputHandler ir = new InputOutputHandler(new File("C:\\Users\\Mike\\Desktop\\p3.txt"));
         ir.parse();
         for(int i = 0; i < 9; i++){
             System.out.println("" + ir.puzzle[i][0] + ir.puzzle[i][1]+ ir.puzzle[i][2]+ ir.puzzle[i][3]+ ir.puzzle[i][4]+ ir.puzzle[i][5]+ ir.puzzle[i][6] + ir.puzzle[i][7]+ ir.puzzle[i][8]);
